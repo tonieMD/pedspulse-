@@ -9,22 +9,27 @@ export default function AuthCallback() {
   const router = useRouter()
 
   useEffect(() => {
-    const handleLogin = async () => {
-      const { error } = await supabase.auth.getSession()
-      if (!error) {
-        router.push('/admin/new') // ✅ redirect after successful login
+    // Supabase will auto-exchange the magic-link tokens from the URL
+    // because we set `detectSessionInUrl: true` above.
+    // Now just listen for the new session:
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        router.replace('/admin/new')
       } else {
-        console.error(error)
-        router.push('/login') // or show an error page
+        router.replace('/login')
       }
-    }
+    })
 
-    handleLogin()
+    return () => {
+      subscription.unsubscribe()
+    }
   }, [router])
 
   return (
-    <div className="min-h-screen flex items-center justify-center text-white bg-black">
-      <p>Logging you in...</p>
+    <div className="min-h-screen flex items-center justify-center bg-black text-white">
+      <p>Finishing login…</p>
     </div>
   )
 }
