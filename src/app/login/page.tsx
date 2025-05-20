@@ -13,22 +13,25 @@ export default function LoginPage() {
 
     const normalized = email.trim().toLowerCase()
     if (normalized !== 'mbumarash1@gmail.com') {
-      setMessage('You are not admin')
+      setMessage('❌ You are not admin')
       return
     }
 
     // ✅ Only admin email gets here
-    const { error } = await supabase.auth.signInWithOtp({
-      email: normalized,
-      options: {
-        emailRedirectTo: 'http://localhost:3000/auth/callback'
-      }
+    setMessage('Sending magic link…')
+
+    const redirectTo = `${process.env.NEXT_PUBLIC_SITE_URL}/admin/new`
+
+    const { data, error } = await supabase.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: redirectTo }
     })
 
     if (error) {
-      setMessage(error.message)
+      console.error(error)
+      setMessage(`❌ ${error.message}`)
     } else {
-      setMessage('Check your email for a login link!')
+      setMessage('✅ Check your email for a login link!')
     }
   }
 
