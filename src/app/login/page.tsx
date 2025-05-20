@@ -4,19 +4,24 @@
 import { useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 
-
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
-  
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    // ✅ CHANGED: Added redirect to custom callback page after login
+    const normalized = email.trim().toLowerCase()
+    if (normalized !== 'mbumarash1@gmail.com') {
+      setMessage('You are not admin')
+      return
+    }
+
+    // ✅ Only admin email gets here
     const { error } = await supabase.auth.signInWithOtp({
-      email,
+      email: normalized,
       options: {
-        emailRedirectTo: 'http://localhost:3000/auth/callback' // 👈 redirect to this after login
+        emailRedirectTo: 'http://localhost:3000/auth/callback'
       }
     })
 
@@ -28,7 +33,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#050A12] text-white px-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#050A12] text-white px-4">
       <form
         onSubmit={handleLogin}
         className="w-full max-w-md space-y-6 bg-gray-900 p-8 rounded-lg border border-gray-700"
@@ -51,12 +56,20 @@ export default function LoginPage() {
           Send Magic Link
         </button>
 
-        {message && <p className="text-sm text-teal-400 mt-2">{message}</p>}
+        {message && (
+          <p
+            className={`text-sm mt-2 ${
+              message === 'You are not admin' ? 'text-red-400' : 'text-teal-400'
+            }`}
+          >
+            {message}
+          </p>
+        )}
       </form>
-        <footer className="py-6 text-center text-xs text-gray-500 border-t border-gray-800">
+
+      <footer className="mt-8 w-full max-w-md text-center text-xs text-gray-500 border-t border-gray-800 py-4">
         © {new Date().getFullYear()} PedsPulse • Built with ❤️ & caffeine
       </footer>
     </div>
   )
 }
-

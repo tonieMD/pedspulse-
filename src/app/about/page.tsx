@@ -76,7 +76,7 @@ export default function AboutPage() {
             <Link href="/episodes" className="hover:text-teal-300">Episodes</Link>
             <Link href="/about" className="hover:text-teal-300">About</Link>
             <Link
-              href="/admin"
+              href="/login"
               className="px-4 py-1.5 rounded bg-teal-600 hover:bg-teal-500 text-xs font-semibold"
             >
               Admin
@@ -112,7 +112,7 @@ export default function AboutPage() {
             <Link href="/episodes" className="block" onClick={() => setOpen(false)}>Episodes</Link>
             <Link href="/about"   className="block" onClick={() => setOpen(false)}>About</Link>
             <Link
-              href="/admin"
+              href="/login"
               className="inline-block px-4 py-2 rounded bg-teal-600 hover:bg-teal-500 text-sm font-semibold mt-2"
               onClick={() => setOpen(false)}
             >
