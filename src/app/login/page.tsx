@@ -22,7 +22,7 @@ export default function LoginPage() {
 
     const redirectTo = `${process.env.NEXT_PUBLIC_SITE_URL}/admin/new`
 
-    const { data, error } = await supabase.auth.signInWithOtp({
+    const { error } = await supabase.auth.signInWithOtp({
       email,
       options: { emailRedirectTo: redirectTo }
     })
