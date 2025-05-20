@@ -24,7 +24,10 @@ export default function LoginPage() {
 
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: redirectTo }
+       options: {
+        // ← this tells Supabase where to send you after you click the magic-link
+        emailRedirectTo: 'https://pedspulse.me/admin/new',
+      },
     })
 
     if (error) {
