@@ -53,6 +53,9 @@ export default function LoginPage() {
 
         {message && <p className="text-sm text-teal-400 mt-2">{message}</p>}
       </form>
+        <footer className="py-6 text-center text-xs text-gray-500 border-t border-gray-800">
+        © {new Date().getFullYear()} PedsPulse • Built with ❤️ & caffeine
+      </footer>
     </div>
   )
 }
